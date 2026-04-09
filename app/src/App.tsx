@@ -22,7 +22,7 @@ export default function App() {
   useEffect(() => { applyColorScheme(); }, []);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/ti2mi">
       <Routes>
         <Route path="/" element={<MainMenu />} />
         <Route path="/themes" element={<ThemeSelect />} />

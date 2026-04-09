@@ -22,11 +22,30 @@ export function generateProblems(level: number, count: number): Problem[] {
   const tier = getTierForLevel(level);
   const generators = TIER_GENERATORS[tier];
   const problems: Problem[] = [];
+  const usedTemplates = new Set<string>();
+
+  // Distribute categories evenly
+  const categories = [...config.categories];
+  const categoryQueue: UnitCategory[] = [];
+  while (categoryQueue.length < count) {
+    categoryQueue.push(...shuffle(categories));
+  }
+
+  // Shuffle generators to avoid repeats
+  const genQueue: ProblemGenerator[] = [];
+  while (genQueue.length < count) {
+    genQueue.push(...shuffle(generators));
+  }
 
   for (let i = 0; i < count; i++) {
-    const category = pickRandom(config.categories);
-    const generator = pickRandom(generators);
-    const problem = generator(level, category);
+    let problem: Problem;
+    let attempts = 0;
+    do {
+      problem = genQueue[i](level, categoryQueue[i]);
+      attempts++;
+    } while (usedTemplates.has(problem.questionTemplate) && attempts < 10);
+
+    usedTemplates.add(problem.questionTemplate);
     problem.id = `lvl${level}-${i}-${Date.now().toString(36)}`;
     problems.push(problem);
   }
@@ -213,36 +232,56 @@ const FOOD_STORIES: StoryScenario[] = [
   { template: "problem.story.divideFood", person: "person.grandma", item: "item.flour" },
   { template: "problem.story.divideFood", person: "person.dad", item: "item.potatoes" },
   { template: "problem.story.divideFood", person: "person.teacher", item: "item.candy" },
+  { template: "problem.story.divideFood", person: "person.peter", item: "item.watermelon" },
+  { template: "problem.story.divideFood", person: "person.anna", item: "item.candy" },
+  { template: "problem.story.divideFood", person: "person.grandma", item: "item.cookies" },
+  { template: "problem.story.divideFood", person: "person.dad", item: "item.cheese" },
 ];
 
 const DRINK_STORIES: StoryScenario[] = [
   { template: "problem.story.pourDrinks", person: "person.mom", item: "item.lemonade" },
   { template: "problem.story.pourDrinks", person: "person.dad", item: "item.juice" },
   { template: "problem.story.pourDrinks", person: "person.anna", item: "item.tea" },
+  { template: "problem.story.pourDrinks", person: "person.peter", item: "item.cocoa" },
+  { template: "problem.story.pourDrinks", person: "person.grandma", item: "item.soup" },
+  { template: "problem.story.pourDrinks", person: "person.teacher", item: "item.paint" },
+  { template: "problem.story.pourDrinks", person: "person.dad", item: "item.milk" },
+  { template: "problem.story.pourDrinks", person: "person.anna", item: "item.water" },
 ];
 
 const LENGTH_STORIES: StoryScenario[] = [
   { template: "problem.story.cutRibbon", person: "person.anna", item: "item.ribbon" },
   { template: "problem.story.cutRibbon", person: "person.grandma", item: "item.fabric" },
   { template: "problem.story.cutRibbon", person: "person.dad", item: "item.rope" },
+  { template: "problem.story.cutRibbon", person: "person.peter", item: "item.wire" },
+  { template: "problem.story.cutRibbon", person: "person.mom", item: "item.tape" },
+  { template: "problem.story.cutRibbon", person: "person.teacher", item: "item.paper" },
 ];
 
 const SPEED_STORIES = [
   { template: "problem.story.roadTrip", vehicle: "item.car" },
   { template: "problem.story.roadTrip", vehicle: "item.bus" },
   { template: "problem.story.roadTrip", vehicle: "item.train" },
+  { template: "problem.story.roadTrip", vehicle: "item.bicycle" },
+  { template: "problem.story.roadTrip", vehicle: "item.motorcycle" },
 ];
 
 const BAKING_STORIES: StoryScenario[] = [
   { template: "problem.story.bakingRecipe", person: "person.grandma", item: "item.flour" },
   { template: "problem.story.bakingRecipe", person: "person.mom", item: "item.sugar" },
   { template: "problem.story.bakingRecipe", person: "person.anna", item: "item.butter" },
+  { template: "problem.story.bakingRecipe", person: "person.peter", item: "item.rice" },
+  { template: "problem.story.bakingRecipe", person: "person.dad", item: "item.pasta" },
+  { template: "problem.story.bakingRecipe", person: "person.teacher", item: "item.oats" },
 ];
 
 const TIME_STORIES: StoryScenario[] = [
   { template: "problem.story.divideTime", person: "person.anna", item: "" },
   { template: "problem.story.divideTime", person: "person.peter", item: "" },
   { template: "problem.story.divideTime", person: "person.mom", item: "" },
+  { template: "problem.story.divideTime", person: "person.dad", item: "" },
+  { template: "problem.story.divideTime", person: "person.grandma", item: "" },
+  { template: "problem.story.divideTime", person: "person.teacher", item: "" },
 ];
 
 function getCategoryStories(category: UnitCategory): StoryScenario[] {
@@ -380,9 +419,15 @@ const tier3Remainder: ProblemGenerator = (level, category) => {
 
   const story = pickRandom(getCategoryStories(category));
 
+  const remainderTemplates: Record<string, string> = {
+    length: "problem.story.remainderLength",
+    volume: "problem.story.remainderVolume",
+    weight: "problem.story.remainderWeight",
+  };
+
   return {
     id: "", level, tier: 3, category,
-    questionTemplate: "problem.story.remainder",
+    questionTemplate: remainderTemplates[category] || "problem.story.remainder",
     questionParams: {
       ...personParams(story.person),
       item: story.item,
@@ -678,4 +723,13 @@ function randomInt(min: number, max: number): number {
 
 function pickRandom<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function shuffle<T>(arr: T[]): T[] {
+  const result = [...arr];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
 }

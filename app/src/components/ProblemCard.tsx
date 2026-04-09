@@ -10,17 +10,20 @@ interface ProblemCardProps {
 export default function ProblemCard({ questionKey, questionParams, problemNumber, totalProblems }: ProblemCardProps) {
   const { t } = useTranslation();
 
-  // Resolve only i18n key params (containing "."), pass others as-is
+  // First resolve i18n keys in params (e.g. "person.mom.bought" → "Mom bought")
   const resolved: Record<string, string> = {};
   for (const [key, val] of Object.entries(questionParams)) {
     const s = String(val);
     if (s.includes('.')) {
-      const translated = t(s, { defaultValue: s });
-      resolved[key] = translated;
+      resolved[key] = t(s, { defaultValue: s });
     } else {
       resolved[key] = s;
     }
   }
+
+  // Get the raw template string without i18next interpolation
+  const template = t(questionKey, { interpolation: { prefix: '[[', suffix: ']]' } });
+  const question = template.replace(/\{\{(\w+)\}\}/g, (_, key) => resolved[key] ?? `{{${key}}}`);
 
   return (
     <div className="problem-card">
@@ -28,7 +31,7 @@ export default function ProblemCard({ questionKey, questionParams, problemNumber
         {t('game.problemOf', { current: problemNumber, total: totalProblems })}
       </div>
       <div className="problem-card__question">
-        {t(questionKey, resolved)}
+        {question}
       </div>
     </div>
   );

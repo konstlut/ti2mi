@@ -10,12 +10,16 @@ interface ProblemCardProps {
 export default function ProblemCard({ questionKey, questionParams, problemNumber, totalProblems }: ProblemCardProps) {
   const { t } = useTranslation();
 
-  // Resolve nested i18n keys in params (e.g. "person.mom" → "Mom")
+  // Resolve only i18n key params (containing "."), pass others as-is
   const resolved: Record<string, string> = {};
   for (const [key, val] of Object.entries(questionParams)) {
     const s = String(val);
-    const translated = t(s, { defaultValue: '' });
-    resolved[key] = translated || s;
+    if (s.includes('.')) {
+      const translated = t(s, { defaultValue: s });
+      resolved[key] = translated;
+    } else {
+      resolved[key] = s;
+    }
   }
 
   return (

@@ -541,7 +541,11 @@
       "bakingRecipe": "{{personHasRecipe}} needs {{amount}} {{unit}} of {{item}} for {{servings}} people. How many {{unit}} are needed for {{targetServings}} people?",
       "trainJourney": "A train ride to the {{destination}} takes {{days}} days, {{hours}} hours and {{minutes}} minutes. How many minutes is the whole trip?",
       "hikingTrail": "{{personGoes}} hiking on a {{distKm}} km trail. They walk {{speed}} meters per minute. How many minutes will the hike take?",
-      "fruitShopping": "{{personBought}} {{item1Kg}} kg of {{item1}} and {{item2Kg}} kg of {{item2}}. They share it equally among {{people}} people. How many grams does each person get?"
+      "fruitShopping": "{{personBought}} {{item1Kg}} kg of {{item1}} and {{item2Kg}} kg of {{item2}}. They share it equally among {{people}} people. How many grams does each person get?",
+      "divideTime": "{{personHas}} {{total}} {{bigUnit}} to finish {{people}} tasks. Each task takes the same time. How many {{smallUnit}} per task?",
+      "subtractTime": "{{personHas}} {{total}} {{bigUnit}} of free time. They already spent {{used}} {{smallUnit}} reading. How many {{smallUnit}} are left?",
+      "multiplyTime": "{{personHas}} {{count}} training sessions, each {{perItem}} {{bigUnit}} long. How many {{smallUnit}} is that in total?",
+      "fitTime": "Each episode is {{tileSize}} {{smallUnit}} long. A marathon lasts {{total}} {{bigUnit}}. How many episodes can you watch?"
     }
   },
   "person": {

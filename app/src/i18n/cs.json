@@ -541,7 +541,11 @@
       "bakingRecipe": "{{personHasRecipe}} potřebuje {{amount}} {{unit}} {{item}} pro {{servings}} lidí. Kolik {{unit}} je potřeba pro {{targetServings}} lidí?",
       "trainJourney": "Cesta vlakem k {{destination}} trvá {{days}} dní, {{hours}} hodin a {{minutes}} minut. Kolik minut trvá celá cesta?",
       "hikingTrail": "{{personGoes}} na túru po {{distKm}} km dlouhé stezce. Jde rychlostí {{speed}} metrů za minutu. Kolik minut bude túra trvat?",
-      "fruitShopping": "{{personBought}} {{item1Kg}} kg {{item1}} a {{item2Kg}} kg {{item2}}. Rozdělí je rovnoměrně mezi {{people}} lidí. Kolik gramů dostane každý?"
+      "fruitShopping": "{{personBought}} {{item1Kg}} kg {{item1}} a {{item2Kg}} kg {{item2}}. Rozdělí je rovnoměrně mezi {{people}} lidí. Kolik gramů dostane každý?",
+      "divideTime": "{{personHas}} {{total}} {{bigUnit}} na {{people}} úkolů. Každý úkol zabere stejně času. Kolik {{smallUnit}} na každý úkol?",
+      "subtractTime": "{{personHas}} {{total}} {{bigUnit}} volného času. Už strávil/a {{used}} {{smallUnit}} čtením. Kolik {{smallUnit}} zbývá?",
+      "multiplyTime": "{{personHas}} {{count}} tréninků, každý trvá {{perItem}} {{bigUnit}}. Kolik {{smallUnit}} je to celkem?",
+      "fitTime": "Každý díl seriálu trvá {{tileSize}} {{smallUnit}}. Maraton trvá {{total}} {{bigUnit}}. Kolik dílů můžeš zhlédnout?"
     }
   },
   "person": {

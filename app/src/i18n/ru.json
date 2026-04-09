@@ -541,7 +541,11 @@
       "bakingRecipe": "{{personHasRecipe}} нужно {{amount}} {{unit}} {{item}} на {{servings}} человек. Сколько {{unit}} нужно на {{targetServings}} человек?",
       "trainJourney": "Поездка на поезде до {{destination}} длится {{days}} дней, {{hours}} часов и {{minutes}} минут. Сколько минут длится вся поездка?",
       "hikingTrail": "{{personGoes}} в поход по тропе длиной {{distKm}} км. Скорость — {{speed}} метров в минуту. Сколько минут займёт поход?",
-      "fruitShopping": "{{personBought}} {{item1Kg}} кг {{item1}} и {{item2Kg}} кг {{item2}}. Делят поровну на {{people}} человек. Сколько граммов достанется каждому?"
+      "fruitShopping": "{{personBought}} {{item1Kg}} кг {{item1}} и {{item2Kg}} кг {{item2}}. Делят поровну на {{people}} человек. Сколько граммов достанется каждому?",
+      "divideTime": "{{personHas}} {{total}} {{bigUnit}} на {{people}} заданий. Каждое задание занимает одинаковое время. Сколько {{smallUnit}} на каждое?",
+      "subtractTime": "{{personHas}} {{total}} {{bigUnit}} свободного времени. Уже потрачено {{used}} {{smallUnit}} на чтение. Сколько {{smallUnit}} осталось?",
+      "multiplyTime": "{{personHas}} {{count}} тренировок, каждая по {{perItem}} {{bigUnit}}. Сколько это {{smallUnit}} всего?",
+      "fitTime": "Каждая серия длится {{tileSize}} {{smallUnit}}. Марафон длится {{total}} {{bigUnit}}. Сколько серий можно посмотреть?"
     }
   },
   "person": {

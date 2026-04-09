@@ -8,9 +8,9 @@ interface ProblemCardProps {
 }
 
 export default function ProblemCard({ questionKey, questionParams, problemNumber, totalProblems }: ProblemCardProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
-  // First resolve i18n keys in params (e.g. "person.mom.bought" → "Mom bought")
+  // Resolve i18n key params (containing "."), pass others as-is
   const resolved: Record<string, string> = {};
   for (const [key, val] of Object.entries(questionParams)) {
     const s = String(val);
@@ -21,9 +21,14 @@ export default function ProblemCard({ questionKey, questionParams, problemNumber
     }
   }
 
-  // Get the raw template string without i18next interpolation
-  const template = t(questionKey, { interpolation: { prefix: '[[', suffix: ']]' } });
-  const question = template.replace(/\{\{(\w+)\}\}/g, (_, key) => resolved[key] ?? `{{${key}}}`);
+  // Get raw template from i18n resources (bypass interpolation entirely)
+  const parts = questionKey.split('.');
+  let template: unknown = i18n.getResourceBundle(i18n.language, 'translation');
+  for (const p of parts) {
+    template = (template as Record<string, unknown>)?.[p];
+  }
+  const raw = typeof template === 'string' ? template : questionKey;
+  const question = raw.replace(/\{\{(\w+)\}\}/g, (_, key) => resolved[key] ?? `{{${key}}}`);
 
   return (
     <div className="problem-card">

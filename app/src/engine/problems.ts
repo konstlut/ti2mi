@@ -193,6 +193,21 @@ interface StoryScenario {
   item: string;
 }
 
+// Generate gendered verb params from a person key like "person.mom"
+function personParams(personKey: string): Record<string, string> {
+  const base = personKey; // e.g. "person.mom"
+  return {
+    person: personKey,
+    personBought: `${base}.bought`,
+    personMade: `${base}.made`,
+    personHas: `${base}.has`,
+    personBuys: `${base}.buys`,
+    personIsMaking: `${base}.is_making`,
+    personHasRecipe: `${base}.has_recipe`,
+    personGoes: `${base}.goes`,
+  };
+}
+
 const FOOD_STORIES: StoryScenario[] = [
   { template: "problem.story.divideFood", person: "person.mom", item: "item.apples" },
   { template: "problem.story.divideFood", person: "person.grandma", item: "item.flour" },
@@ -261,7 +276,7 @@ const tier3DivideFood: ProblemGenerator = (level, category) => {
     id: "", level, tier: 3, category,
     questionTemplate: story.template,
     questionParams: {
-      person: story.person,
+      ...personParams(story.person),
       item: story.item,
       total: useBig ? totalBig : totalSmall,
       bigUnit: useBig ? big.abbreviation : small.abbreviation,
@@ -305,7 +320,7 @@ const tier3MultiplyItems: ProblemGenerator = (level, category) => {
       id: "", level, tier: 3, category,
       questionTemplate: "problem.story.multiplyTime",
       questionParams: {
-        person: pickRandom(["person.anna", "person.peter", "person.mom"]),
+        ...personParams(pickRandom(["person.anna", "person.peter", "person.mom"])),
         count,
         perItem,
         bigUnit: big.abbreviation,
@@ -323,7 +338,7 @@ const tier3MultiplyItems: ProblemGenerator = (level, category) => {
     id: "", level, tier: 3, category,
     questionTemplate: "problem.story.multiplyItems",
     questionParams: {
-      person: scenario.person,
+      ...personParams(scenario.person),
       count,
       items: scenario.items,
       perItem,
@@ -351,7 +366,7 @@ const tier3Remainder: ProblemGenerator = (level, category) => {
       id: "", level, tier: 3, category,
       questionTemplate: "problem.story.subtractTime",
       questionParams: {
-        person: pickRandom(["person.anna", "person.peter", "person.mom"]),
+        ...personParams(pickRandom(["person.anna", "person.peter", "person.mom"])),
         total: totalBig,
         bigUnit: big.abbreviation,
         used: usedSmall,
@@ -369,7 +384,7 @@ const tier3Remainder: ProblemGenerator = (level, category) => {
     id: "", level, tier: 3, category,
     questionTemplate: "problem.story.remainder",
     questionParams: {
-      person: story.person,
+      ...personParams(story.person),
       item: story.item,
       total: totalBig,
       bigUnit: big.abbreviation,
@@ -536,7 +551,7 @@ const tier5PartyDrinks: ProblemGenerator = (level, _category) => {
     id: "", level, tier: 5, category: "volume",
     questionTemplate: "problem.story.partyDrinks",
     questionParams: {
-      person: pickRandom(["person.anna", "person.mom", "person.peter"]),
+      ...personParams(pickRandom(["person.anna", "person.mom", "person.peter"])),
       item: pickRandom(["item.lemonade", "item.juice", "item.cocoa"]),
       total: useLiters ? totalL : totalMl,
       totalUnit: useLiters ? "l" : "ml",
@@ -561,7 +576,7 @@ const tier5BakingRecipe: ProblemGenerator = (level, _category) => {
     id: "", level, tier: 5, category: "weight",
     questionTemplate: story.template,
     questionParams: {
-      person: story.person,
+      ...personParams(story.person),
       item: story.item,
       amount: origAmount,
       unit: "g",
@@ -606,7 +621,7 @@ const tier5HikingTrail: ProblemGenerator = (level, _category) => {
     id: "", level, tier: 5, category: "length",
     questionTemplate: "problem.story.hikingTrail",
     questionParams: {
-      person: pickRandom(["person.peter", "person.dad", "person.anna"]),
+      ...personParams(pickRandom(["person.peter", "person.dad", "person.anna"])),
       distKm,
       speed,
     },
@@ -629,7 +644,7 @@ const tier5FruitShopping: ProblemGenerator = (level, _category) => {
     id: "", level, tier: 5, category: "weight",
     questionTemplate: "problem.story.fruitShopping",
     questionParams: {
-      person: pickRandom(["person.mom", "person.grandma", "person.dad"]),
+      ...personParams(pickRandom(["person.mom", "person.grandma", "person.dad"])),
       item1: pickRandom(["item.apples", "item.oranges", "item.bananas"]),
       item1Kg,
       item2: pickRandom(["item.pears", "item.grapes", "item.plums"]),

@@ -42,17 +42,28 @@ export default function GameScreen() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<{ correct: boolean; timeMs: number }[]>([]);
   const [streak, setStreak] = useState(0);
-  const [feedback, setFeedback] = useState<{ type: 'correct' | 'wrong'; answer?: string } | null>(null);
+  const [attemptsLeft, setAttemptsLeft] = useState(3);
+  const [feedback, setFeedback] = useState<{ type: 'correct' | 'wrong' | 'tryAgain'; answer?: string; remaining?: number } | null>(null);
   const [problemStartTime, setProblemStartTime] = useState(Date.now());
   const [_levelStartTime] = useState(Date.now());
   const [showResult, setShowResult] = useState(false);
 
   useEffect(() => {
     setProblemStartTime(Date.now());
+    setAttemptsLeft(3);
   }, [currentIndex]);
 
   const currentProblem = problems[currentIndex];
   const stage = theme ? theme.stages[Math.min(level - 1, 14)] : null;
+
+  const advanceToNext = useCallback(() => {
+    setFeedback(null);
+    if (currentIndex + 1 < problems.length) {
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      setShowResult(true);
+    }
+  }, [currentIndex, problems.length]);
 
   const handleAnswer = useCallback(
     (input: string) => {
@@ -63,28 +74,32 @@ export default function GameScreen() {
       const isCorrect =
         !isNaN(userAnswer) && Math.abs(userAnswer - currentProblem.answer) < 0.01;
 
-      const timeMs = Date.now() - problemStartTime;
-      const newStreak = isCorrect ? streak + 1 : 0;
+      if (isCorrect) {
+        const timeMs = Date.now() - problemStartTime;
+        setStreak(streak + 1);
+        setFeedback({ type: 'correct' });
+        setAnswers([...answers, { correct: true, timeMs }]);
+        setTimeout(advanceToNext, 1200);
+      } else {
+        const remaining = attemptsLeft - 1;
+        setAttemptsLeft(remaining);
 
-      setFeedback({
-        type: isCorrect ? 'correct' : 'wrong',
-        answer: isCorrect ? undefined : `${currentProblem.answer} ${currentProblem.answerUnit}`,
-      });
-      setStreak(newStreak);
-
-      const newAnswers = [...answers, { correct: isCorrect, timeMs }];
-      setAnswers(newAnswers);
-
-      setTimeout(() => {
-        setFeedback(null);
-        if (currentIndex + 1 < problems.length) {
-          setCurrentIndex(currentIndex + 1);
+        if (remaining > 0) {
+          setFeedback({ type: 'tryAgain', remaining });
+          setTimeout(() => setFeedback(null), 1500);
         } else {
-          setShowResult(true);
+          const timeMs = Date.now() - problemStartTime;
+          setStreak(0);
+          setFeedback({
+            type: 'wrong',
+            answer: `${currentProblem.answer} ${currentProblem.answerUnit}`,
+          });
+          setAnswers([...answers, { correct: false, timeMs }]);
+          setTimeout(advanceToNext, 3000);
         }
-      }, isCorrect ? 1200 : 2500);
+      }
     },
-    [currentProblem, problemStartTime, streak, answers, currentIndex, problems.length]
+    [currentProblem, problemStartTime, streak, answers, attemptsLeft, advanceToNext]
   );
 
   const result = useMemo(() => {
@@ -210,9 +225,11 @@ export default function GameScreen() {
           />
 
           {feedback ? (
-            <div className={`feedback feedback--${feedback.type}`}>
+            <div className={`feedback feedback--${feedback.type === 'tryAgain' ? 'wrong' : feedback.type}`}>
               {feedback.type === 'correct'
                 ? t('feedback.correct')
+                : feedback.type === 'tryAgain'
+                ? t('feedback.tryAgain', { remaining: feedback.remaining })
                 : t('feedback.wrong', { answer: feedback.answer })}
             </div>
           ) : (

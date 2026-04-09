@@ -83,6 +83,7 @@ export default function SettingsScreen() {
     if (p) {
       setProfile(p);
       if (p.selectedLanguage) i18n.changeLanguage(p.selectedLanguage);
+      document.documentElement.setAttribute('data-theme', p.colorScheme || 'sunset');
     }
   };
 

@@ -7,17 +7,12 @@ import ru from './ru.json';
 function getSavedLanguage(): string {
   try {
     const profilesRaw = localStorage.getItem('ti2mi-profiles');
-    const activeId = localStorage.getItem('ti2mi-active-profile');
-    if (profilesRaw && activeId) {
+    const activeRaw = localStorage.getItem('ti2mi-active-profile');
+    if (profilesRaw && activeRaw) {
       const profiles = JSON.parse(profilesRaw);
+      const activeId = JSON.parse(activeRaw);
       const active = profiles.find((p: { id: string }) => p.id === activeId);
       if (active?.selectedLanguage) return active.selectedLanguage;
-    }
-    // Fallback: old single-profile key
-    const oldProfile = localStorage.getItem('ti2mi-profile');
-    if (oldProfile) {
-      const parsed = JSON.parse(oldProfile);
-      if (parsed?.selectedLanguage) return parsed.selectedLanguage;
     }
   } catch { /* ignore */ }
   return 'en';

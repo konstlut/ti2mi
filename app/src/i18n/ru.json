@@ -548,7 +548,19 @@
       "divideTime": "{{personHas}} {{total}} {{bigUnit}} на {{people}} заданий. Каждое задание занимает одинаковое время. Сколько {{smallUnit}} на каждое?",
       "subtractTime": "{{personHas}} {{total}} {{bigUnit}} свободного времени. Уже потрачено {{used}} {{smallUnit}} на чтение. Сколько {{smallUnit}} осталось?",
       "multiplyTime": "{{personHas}} {{count}} тренировок, каждая по {{perItem}} {{bigUnit}}. Сколько это {{smallUnit}} всего?",
-      "fitTime": "Каждая серия длится {{tileSize}} {{smallUnit}}. Марафон длится {{total}} {{bigUnit}}. Сколько серий можно посмотреть?"
+      "fitTime": "Каждая серия длится {{tileSize}} {{smallUnit}}. Марафон длится {{total}} {{bigUnit}}. Сколько серий можно посмотреть?",
+      "shelves": "{{personHas}} {{total}} {{items}} и хочет расставить их поровну на {{shelfCount}} полок. Сколько {{items}} будет на каждой полке?",
+      "aquarium": "Аквариум вмещает {{total}} {{bigUnit}} воды. {{personBuys}} {{count}} {{items}} рыбного корма, по {{perItem}} {{smallUnit}} каждая. Сколько {{smallUnit}} корма всего?",
+      "steps": "Шаг {{person}} равен {{stepCm}} см. Сколько шагов нужно, чтобы пройти {{distM}} м?",
+      "classroom": "Урок длится {{lessonMin}} минут. В день {{count}} уроков. Сколько это {{targetUnit}}?",
+      "waterTank": "Бак вмещает {{totalL}} литров. Кран наливает {{mlPerMin}} мл в минуту. За сколько минут бак наполнится?",
+      "bookReading": "Книга толщиной {{totalMm}} мм. Каждая глава — {{chapterMm}} мм. Сколько глав в книге?",
+      "poolLaps": "Бассейн длиной {{poolM}} м. {{person}} проплывает {{laps}} дорожек туда и обратно. Сколько метров проплывёт {{person}} всего?",
+      "camping": "{{personBuys}} {{countA}} банок фасоли (по {{weightA}} г) и {{countB}} бутылок воды (по {{weightB}} г). Каков общий вес в кг?",
+      "classTrip": "Школьный автобус проезжает {{distKm}} км со скоростью {{speed}} км/ч. Потом класс идёт пешком {{walkM}} м со скоростью {{walkSpeed}} м/мин. Сколько минут длится вся поездка?",
+      "fillAquarium": "Аквариум длиной {{lengthCm}} см, шириной {{widthCm}} см и высотой {{heightCm}} см. Сколько литров воды в него поместится?",
+      "gardenBed": "Грядка длиной {{lengthM}} м и шириной {{widthCm}} см. {{person}} сажает {{seedsPerM}} семян на каждый метр длины. Сколько семян всего?",
+      "packaging": "Завод пакует бутылки по {{mlPerBottle}} мл в коробки по {{perBox}} штук. Сколько коробок нужно на {{totalL}} литров?"
     }
   },
   "person": {

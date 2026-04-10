@@ -484,6 +484,98 @@ const tier3Tiles: ProblemGenerator = (level, category) => {
   };
 };
 
+const tier3Shelves: ProblemGenerator = (level, category) => {
+  const story = pickRandom(getCategoryStories(category));
+  const shelfCount = pickRandom([2, 3, 4, 5, 6]);
+  const perShelf = randomInt(3, 15);
+  const total = perShelf * shelfCount;
+  const answer = perShelf;
+
+  const pairs = getEasyPairs(category);
+  const [small] = pickRandom(pairs);
+
+  return {
+    id: "", level, tier: 3, category,
+    questionTemplate: "problem.story.shelves",
+    questionParams: {
+      ...personParams(story.person),
+      total,
+      items: story.item,
+      shelfCount,
+      smallUnit: small.abbreviation,
+    },
+    answer,
+    answerUnit: "",
+  };
+};
+
+const tier3Aquarium: ProblemGenerator = (level, _category) => {
+  const count = randomInt(2, 8);
+  const perItem = randomInt(1, 10) * 10;
+  const answer = count * perItem;
+
+  return {
+    id: "", level, tier: 3, category: "volume",
+    questionTemplate: "problem.story.aquarium",
+    questionParams: {
+      ...personParams(pickRandom(["person.anna", "person.peter", "person.dad"])),
+      total: randomInt(5, 50),
+      bigUnit: "l",
+      count,
+      items: pickRandom(["item.bottle", "item.pack"]),
+      perItem,
+      smallUnit: "ml",
+    },
+    answer,
+    answerUnit: "ml",
+  };
+};
+
+const tier3Steps: ProblemGenerator = (level, _category) => {
+  const stepCmOptions = [25, 50, 40, 20];
+  const stepCm = pickRandom(stepCmOptions);
+  // distM * 100 / stepCm must be integer
+  const validDist: number[] = [];
+  for (let d = 1; d <= 10; d++) {
+    if ((d * 100) % stepCm === 0) validDist.push(d);
+  }
+  const distM = validDist.length > 0 ? pickRandom(validDist) : 2;
+  const answer = (distM * 100) / stepCm;
+
+  return {
+    id: "", level, tier: 3, category: "length",
+    questionTemplate: "problem.story.steps",
+    questionParams: {
+      ...personParams(pickRandom(["person.anna", "person.peter", "person.dad"])),
+      stepCm,
+      distM,
+    },
+    answer,
+    answerUnit: "",
+  };
+};
+
+const tier3Classroom: ProblemGenerator = (level, _category) => {
+  const lessonMin = pickRandom([30, 40, 45]);
+  const count = randomInt(2, 6);
+  const totalMin = lessonMin * count;
+  const useHours = totalMin % 60 === 0;
+  const answer = useHours ? totalMin / 60 : totalMin;
+  const targetUnit = useHours ? "h" : "min";
+
+  return {
+    id: "", level, tier: 3, category: "time",
+    questionTemplate: "problem.story.classroom",
+    questionParams: {
+      lessonMin,
+      count,
+      targetUnit,
+    },
+    answer,
+    answerUnit: targetUnit,
+  };
+};
+
 // ---------------------------------------------------------------------------
 // Tier 4 — Advanced: story-based word problems
 // ---------------------------------------------------------------------------
@@ -577,6 +669,91 @@ const tier4CompareWeights: ProblemGenerator = (level, _category) => {
     },
     answer,
     answerUnit: "g",
+  };
+};
+
+const tier4WaterTank: ProblemGenerator = (level, _category) => {
+  const mlPerMin = pickRandom([200, 250, 500, 100, 125]);
+  // totalL * 1000 / mlPerMin must be integer
+  const validLiters: number[] = [];
+  for (let l = 1; l <= 20; l++) {
+    if ((l * 1000) % mlPerMin === 0) validLiters.push(l);
+  }
+  const totalL = validLiters.length > 0 ? pickRandom(validLiters) : 10;
+  const answer = (totalL * 1000) / mlPerMin;
+
+  return {
+    id: "", level, tier: 4, category: "volume",
+    questionTemplate: "problem.story.waterTank",
+    questionParams: { totalL, mlPerMin },
+    answer,
+    answerUnit: "min",
+  };
+};
+
+const tier4BookReading: ProblemGenerator = (level, _category) => {
+  const chapterMm = pickRandom([4, 5, 8, 10, 15, 20, 25]);
+  const chapters = randomInt(5, 20);
+  const totalMm = chapterMm * chapters;
+  const answer = chapters;
+
+  return {
+    id: "", level, tier: 4, category: "length",
+    questionTemplate: "problem.story.bookReading",
+    questionParams: { totalMm, chapterMm },
+    answer,
+    answerUnit: "",
+  };
+};
+
+const tier4PoolLaps: ProblemGenerator = (level, _category) => {
+  const poolM = pickRandom([25, 50]);
+  const laps = randomInt(2, 10);
+  const totalM = poolM * laps * 2;
+  const answer = totalM;
+
+  return {
+    id: "", level, tier: 4, category: "length",
+    questionTemplate: "problem.story.poolLaps",
+    questionParams: {
+      ...personParams(pickRandom(["person.anna", "person.peter", "person.dad"])),
+      poolM,
+      laps,
+    },
+    answer,
+    answerUnit: "m",
+  };
+};
+
+const tier4Camping: ProblemGenerator = (level, _category) => {
+  // (countA * weightA + countB * weightB) must be divisible by 1000
+  const countA = randomInt(2, 6);
+  const weightA = pickRandom([200, 250, 400, 500]);
+  const countB = randomInt(2, 6);
+  const weightB = pickRandom([500, 750, 1000, 1500]);
+  const totalG = countA * weightA + countB * weightB;
+  // Adjust to ensure integer kg: pick values that sum to multiples of 1000
+  const adjustedTotalG = Math.ceil(totalG / 1000) * 1000;
+  const adjustedWeightB = (adjustedTotalG - countA * weightA) / countB;
+  const useAdjusted = adjustedWeightB > 0 && adjustedWeightB === Math.floor(adjustedWeightB);
+  const finalWeightB = useAdjusted ? adjustedWeightB : weightB;
+  const finalTotalG = countA * weightA + countB * finalWeightB;
+  const answer = finalTotalG / 1000;
+  // Fallback: if not integer, just report in grams
+  const isInteger = answer === Math.floor(answer);
+
+  return {
+    id: "", level, tier: 4, category: "weight",
+    questionTemplate: "problem.story.camping",
+    questionParams: {
+      ...personParams(pickRandom(["person.peter", "person.dad", "person.anna"])),
+      countA,
+      weightA,
+      countB,
+      weightB: finalWeightB,
+    },
+    answer: isInteger ? answer : finalTotalG,
+    answerUnit: isInteger ? "kg" : "g",
   };
 };
 
@@ -701,6 +878,98 @@ const tier5FruitShopping: ProblemGenerator = (level, _category) => {
   };
 };
 
+const tier5ClassTrip: ProblemGenerator = (level, _category) => {
+  const speeds = [40, 50, 60, 80, 100, 120];
+  const speed = pickRandom(speeds);
+  // distKm / speed * 60 must be integer
+  const validDist: number[] = [];
+  for (let d = 1; d <= 20; d++) {
+    if ((d * 60) % speed === 0) validDist.push(d);
+  }
+  const distKm = validDist.length > 0 ? pickRandom(validDist) : speed;
+  const busMinutes = (distKm / speed) * 60;
+
+  const walkSpeed = pickRandom([50, 60, 75, 80, 100]);
+  const validWalk: number[] = [];
+  for (let w = 100; w <= 2000; w += 100) {
+    if (w % walkSpeed === 0) validWalk.push(w);
+  }
+  const walkM = validWalk.length > 0 ? pickRandom(validWalk) : walkSpeed * 10;
+  const walkMinutes = walkM / walkSpeed;
+  const answer = busMinutes + walkMinutes;
+
+  return {
+    id: "", level, tier: 5, category: "time",
+    questionTemplate: "problem.story.classTrip",
+    questionParams: { distKm, speed, walkM, walkSpeed },
+    answer,
+    answerUnit: "min",
+  };
+};
+
+const tier5FillAquarium: ProblemGenerator = (level, _category) => {
+  // l * w * h / 1000 must be integer
+  const lengthCm = pickRandom([20, 25, 40, 50, 80, 100]);
+  const widthCm = pickRandom([10, 20, 25, 40, 50]);
+  // Pick height so that l*w*h is divisible by 1000
+  const lw = lengthCm * widthCm;
+  const validH: number[] = [];
+  for (let h = 10; h <= 60; h += 5) {
+    if ((lw * h) % 1000 === 0) validH.push(h);
+  }
+  const heightCm = validH.length > 0 ? pickRandom(validH) : 50;
+  const answer = (lengthCm * widthCm * heightCm) / 1000;
+
+  return {
+    id: "", level, tier: 5, category: "volume",
+    questionTemplate: "problem.story.fillAquarium",
+    questionParams: { lengthCm, widthCm, heightCm },
+    answer,
+    answerUnit: "l",
+  };
+};
+
+const tier5GardenBed: ProblemGenerator = (level, _category) => {
+  const lengthM = randomInt(2, 15);
+  const widthCm = randomInt(20, 80);
+  const seedsPerM = randomInt(3, 12);
+  const answer = lengthM * seedsPerM;
+
+  return {
+    id: "", level, tier: 5, category: "length",
+    questionTemplate: "problem.story.gardenBed",
+    questionParams: {
+      ...personParams(pickRandom(["person.mom", "person.grandma", "person.dad"])),
+      lengthM,
+      widthCm,
+      seedsPerM,
+    },
+    answer,
+    answerUnit: "",
+  };
+};
+
+const tier5Packaging: ProblemGenerator = (level, _category) => {
+  const mlPerBottle = pickRandom([200, 250, 330, 500, 750]);
+  const perBox = pickRandom([4, 6, 8, 10, 12]);
+  // totalL * 1000 / mlPerBottle / perBox must be integer
+  const bottlesPerBox = mlPerBottle * perBox;
+  const validL: number[] = [];
+  for (let l = 1; l <= 100; l++) {
+    if ((l * 1000) % bottlesPerBox === 0) validL.push(l);
+  }
+  const totalL = validL.length > 0 ? pickRandom(validL) : bottlesPerBox / 1000 * 10;
+  const answer = (totalL * 1000) / mlPerBottle / perBox;
+
+  return {
+    id: "", level, tier: 5, category: "weight",
+    questionTemplate: "problem.story.packaging",
+    questionParams: { mlPerBottle, perBox, totalL },
+    answer,
+    answerUnit: "",
+  };
+};
+
 // ---------------------------------------------------------------------------
 // Tier → generators mapping
 // ---------------------------------------------------------------------------
@@ -708,9 +977,9 @@ const tier5FruitShopping: ProblemGenerator = (level, _category) => {
 const TIER_GENERATORS: Record<number, ProblemGenerator[]> = {
   1: [tier1DirectConvert, tier1DirectConvertLarger, tier1HowMany],
   2: [tier2FractionConvert, tier2MultiStep, tier2AddSameCategory],
-  3: [tier3DivideFood, tier3MultiplyItems, tier3Remainder, tier3Tiles],
-  4: [tier4MovieTime, tier4RoadTrip, tier4PetFood, tier4GardenFence, tier4CompareWeights],
-  5: [tier5PartyDrinks, tier5BakingRecipe, tier5TrainJourney, tier5HikingTrail, tier5FruitShopping],
+  3: [tier3DivideFood, tier3MultiplyItems, tier3Remainder, tier3Tiles, tier3Shelves, tier3Aquarium, tier3Steps, tier3Classroom],
+  4: [tier4MovieTime, tier4RoadTrip, tier4PetFood, tier4GardenFence, tier4CompareWeights, tier4WaterTank, tier4BookReading, tier4PoolLaps, tier4Camping],
+  5: [tier5PartyDrinks, tier5BakingRecipe, tier5TrainJourney, tier5HikingTrail, tier5FruitShopping, tier5ClassTrip, tier5FillAquarium, tier5GardenBed, tier5Packaging],
 };
 
 // ---------------------------------------------------------------------------

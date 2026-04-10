@@ -550,7 +550,7 @@
       "multiplyTime": "{{personHas}} {{count}} training sessions, each {{perItem}} {{bigUnit}} long. How many {{smallUnit}} is that in total?",
       "fitTime": "Each episode is {{tileSize}} {{smallUnit}} long. A marathon lasts {{total}} {{bigUnit}}. How many episodes can you watch?",
       "shelves": "{{personHas}} {{total}} {{items}} to arrange on {{shelfCount}} shelves equally. How many {{items}} go on each shelf?",
-      "aquarium": "An aquarium holds {{total}} {{bigUnit}} of water. {{personBuys}} {{count}} {{items}} of fish food, each {{perItem}} {{smallUnit}}. How many {{smallUnit}} of food is that in total?",
+      "aquarium": "{{personBuys}} {{count}} {{items}} of fish food, each {{perItem}} {{smallUnit}}. How many {{smallUnit}} of food is that in total?",
       "steps": "{{person}}'s step is {{stepCm}} cm long. How many steps to walk {{distM}} m?",
       "classroom": "A school lesson is {{lessonMin}} minutes long. There are {{count}} lessons in a day. How many {{targetUnit}} is that?",
       "waterTank": "A tank holds {{totalL}} liters. A tap fills {{mlPerMin}} ml per minute. How many minutes to fill the tank?",
@@ -559,7 +559,7 @@
       "camping": "{{personBuys}} {{countA}} cans of beans ({{weightA}} g each) and {{countB}} bottles of water ({{weightB}} g each). What is the total weight in kg?",
       "classTrip": "A school bus travels {{distKm}} km at {{speed}} km/h. Then the class walks {{walkM}} m at {{walkSpeed}} m/min. How many minutes is the total trip?",
       "fillAquarium": "An aquarium is {{lengthCm}} cm long, {{widthCm}} cm wide and {{heightCm}} cm tall. How many liters of water does it hold?",
-      "gardenBed": "A garden bed is {{lengthM}} m long and {{widthCm}} cm wide. {{person}} puts {{seedsPerM}} seeds per meter of length. How many seeds in total?",
+      "gardenBed": "A garden bed is {{lengthM}} m long. {{personBuys}} {{seedsPerM}} seeds per meter of length. How many seeds in total?",
       "packaging": "A factory packs {{mlPerBottle}} ml bottles into boxes of {{perBox}}. How many boxes are needed for {{totalL}} liters?"
     }
   },

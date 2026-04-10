@@ -22,7 +22,7 @@ export function generateProblems(level: number, count: number): Problem[] {
   const tier = getTierForLevel(level);
   const generators = TIER_GENERATORS[tier];
   const problems: Problem[] = [];
-  const usedTemplates = new Set<string>();
+  const usedKeys = new Set<string>();
 
   // Distribute categories evenly
   const categories = [...config.categories];
@@ -41,11 +41,15 @@ export function generateProblems(level: number, count: number): Problem[] {
     let problem: Problem;
     let attempts = 0;
     do {
-      problem = genQueue[i](level, categoryQueue[i]);
+      const gen = attempts < 5 ? genQueue[i] : pickRandom(generators);
+      const cat = attempts < 5 ? categoryQueue[i] : pickRandom(config.categories);
+      problem = gen(level, cat);
       attempts++;
-    } while (usedTemplates.has(problem.questionTemplate) && attempts < 10);
+      // Unique key = template + answer to avoid same question AND same story type
+    } while (usedKeys.has(problem.questionTemplate + '|' + problem.answer) && attempts < 20);
 
-    usedTemplates.add(problem.questionTemplate);
+    usedKeys.add(problem.questionTemplate + '|' + problem.answer);
+    usedKeys.add(problem.questionTemplate); // also block same template entirely
     problem.id = `lvl${level}-${i}-${Date.now().toString(36)}`;
     problems.push(problem);
   }
@@ -491,9 +495,6 @@ const tier3Shelves: ProblemGenerator = (level, category) => {
   const total = perShelf * shelfCount;
   const answer = perShelf;
 
-  const pairs = getEasyPairs(category);
-  const [small] = pickRandom(pairs);
-
   return {
     id: "", level, tier: 3, category,
     questionTemplate: "problem.story.shelves",
@@ -502,7 +503,6 @@ const tier3Shelves: ProblemGenerator = (level, category) => {
       total,
       items: story.item,
       shelfCount,
-      smallUnit: small.abbreviation,
     },
     answer,
     answerUnit: "",
@@ -519,8 +519,6 @@ const tier3Aquarium: ProblemGenerator = (level, _category) => {
     questionTemplate: "problem.story.aquarium",
     questionParams: {
       ...personParams(pickRandom(["person.anna", "person.peter", "person.dad"])),
-      total: randomInt(5, 50),
-      bigUnit: "l",
       count,
       items: pickRandom(["item.bottle", "item.pack"]),
       perItem,
@@ -931,7 +929,6 @@ const tier5FillAquarium: ProblemGenerator = (level, _category) => {
 
 const tier5GardenBed: ProblemGenerator = (level, _category) => {
   const lengthM = randomInt(2, 15);
-  const widthCm = randomInt(20, 80);
   const seedsPerM = randomInt(3, 12);
   const answer = lengthM * seedsPerM;
 
@@ -941,7 +938,6 @@ const tier5GardenBed: ProblemGenerator = (level, _category) => {
     questionParams: {
       ...personParams(pickRandom(["person.mom", "person.grandma", "person.dad"])),
       lengthM,
-      widthCm,
       seedsPerM,
     },
     answer,

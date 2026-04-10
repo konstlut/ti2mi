@@ -546,11 +546,11 @@
       "hikingTrail": "{{personGoes}} na túru po {{distKm}} km dlouhé stezce. Jde rychlostí {{speed}} metrů za minutu. Kolik minut bude túra trvat?",
       "fruitShopping": "{{personBought}} {{item1Kg}} kg {{item1}} a {{item2Kg}} kg {{item2}}. Rozdělí je rovnoměrně mezi {{people}} lidí. Kolik gramů dostane každý?",
       "divideTime": "{{personHas}} {{total}} {{bigUnit}} na {{people}} úkolů. Každý úkol zabere stejně času. Kolik {{smallUnit}} na každý úkol?",
-      "subtractTime": "{{personHas}} {{total}} {{bigUnit}} volného času. Už strávil/a {{used}} {{smallUnit}} čtením. Kolik {{smallUnit}} zbývá?",
+      "subtractTime": "{{personHas}} {{total}} {{bigUnit}} volného času. Už strávili {{used}} {{smallUnit}} čtením. Kolik {{smallUnit}} zbývá?",
       "multiplyTime": "{{personHas}} {{count}} tréninků, každý trvá {{perItem}} {{bigUnit}}. Kolik {{smallUnit}} je to celkem?",
       "fitTime": "Každý díl seriálu trvá {{tileSize}} {{smallUnit}}. Maraton trvá {{total}} {{bigUnit}}. Kolik dílů můžeš zhlédnout?",
       "shelves": "{{personHas}} {{total}} {{items}} a chce je rovnoměrně rozložit na {{shelfCount}} poliček. Kolik {{items}} bude na každé poličce?",
-      "aquarium": "Akvárium pojme {{total}} {{bigUnit}} vody. {{personBuys}} {{count}} {{items}} rybího krmiva, každý po {{perItem}} {{smallUnit}}. Kolik {{smallUnit}} krmiva je to celkem?",
+      "aquarium": "{{personBuys}} {{count}} {{items}} rybího krmiva, každý po {{perItem}} {{smallUnit}}. Kolik {{smallUnit}} krmiva je to celkem?",
       "steps": "Krok {{person}} je {{stepCm}} cm dlouhý. Kolik kroků potřebuje na {{distM}} m?",
       "classroom": "Školní hodina trvá {{lessonMin}} minut. Za den je {{count}} hodin. Kolik je to {{targetUnit}}?",
       "waterTank": "Nádrž pojme {{totalL}} litrů. Kohoutek napouští {{mlPerMin}} ml za minutu. Za kolik minut bude nádrž plná?",
@@ -559,7 +559,7 @@
       "camping": "{{personBuys}} {{countA}} konzerv fazolí (po {{weightA}} g) a {{countB}} lahví vody (po {{weightB}} g). Kolik to váží celkem v kg?",
       "classTrip": "Školní autobus ujede {{distKm}} km rychlostí {{speed}} km/h. Pak třída jde pěšky {{walkM}} m rychlostí {{walkSpeed}} m/min. Kolik minut trvá celý výlet?",
       "fillAquarium": "Akvárium je {{lengthCm}} cm dlouhé, {{widthCm}} cm široké a {{heightCm}} cm vysoké. Kolik litrů vody se do něj vejde?",
-      "gardenBed": "Záhon je {{lengthM}} m dlouhý a {{widthCm}} cm široký. {{person}} sází {{seedsPerM}} semínek na metr délky. Kolik semínek je to celkem?",
+      "gardenBed": "Záhon je {{lengthM}} m dlouhý. {{personBuys}} {{seedsPerM}} semínek na metr délky. Kolik semínek je to celkem?",
       "packaging": "Továrna balí lahve po {{mlPerBottle}} ml do krabic po {{perBox}} kusech. Kolik krabic je potřeba na {{totalL}} litrů?"
     }
   },

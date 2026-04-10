@@ -44,6 +44,7 @@
     "tryAgain": "Try Again",
     "nextLevel": "Next: Level {{level}}",
     "themeComplete": "🏆 Theme Complete! Congratulations!",
+    "allLevelsComplete": "You've mastered all 15 levels in this theme! Try another theme or replay to earn more stars.",
     "perfectScore": "Perfect Score!",
     "newRecord": "New Record!",
     "accuracy": "Accuracy: {{percent}}%",

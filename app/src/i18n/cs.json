@@ -44,6 +44,7 @@
     "tryAgain": "Zkusit znovu",
     "nextLevel": "Další: Úroveň {{level}}",
     "themeComplete": "🏆 Téma dokončeno! Gratulujeme!",
+    "allLevelsComplete": "Zvládli jste všech 15 úrovní! Zkuste jiné téma nebo hrajte znovu pro více hvězd.",
     "perfectScore": "Plný počet!",
     "newRecord": "Nový rekord!",
     "accuracy": "Přesnost: {{percent}} %",

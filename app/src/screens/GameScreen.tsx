@@ -31,12 +31,13 @@ export default function GameScreen() {
     [themeId]
   );
 
-  const level = themeProgress?.currentLevel ?? 1;
+  const level = Math.min(themeProgress?.currentLevel ?? 1, 15);
+  const themeCompleted = (themeProgress?.currentLevel ?? 1) > 15;
   const levelConfig = useMemo(() => getLevelConfig(level), [level]);
 
   const problems = useMemo(
-    () => generateProblems(level, levelConfig.problemCount),
-    [level, levelConfig.problemCount]
+    () => themeCompleted ? [] : generateProblems(level, levelConfig.problemCount),
+    [level, levelConfig.problemCount, themeCompleted]
   );
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -128,6 +129,30 @@ export default function GameScreen() {
       <div className="screen">
         <p>{t('game.themeNotFound')}</p>
         <button className="btn" onClick={() => navigate('/themes')}>{t('menu.back')}</button>
+      </div>
+    );
+  }
+
+  if (themeCompleted) {
+    return (
+      <div className="screen level-result">
+        <EvolutionImage
+          themeId={theme.id}
+          stage={15}
+          emoji={theme.stages[14].emoji}
+          stageName={t(theme.stages[14].name)}
+          color={theme.stages[14].color}
+        />
+        <h2>{t('levelup.themeComplete')}</h2>
+        <p className="level-result__complete">{t('levelup.allLevelsComplete')}</p>
+        <div className="level-result__buttons">
+          <button className="btn btn--primary" onClick={() => navigate('/themes')}>
+            {t('menu.selectTheme')}
+          </button>
+          <button className="btn btn--secondary" onClick={() => navigate('/')}>
+            {t('menu.mainMenu')}
+          </button>
+        </div>
       </div>
     );
   }

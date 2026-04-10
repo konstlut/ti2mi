@@ -10,25 +10,39 @@ interface ProblemCardProps {
 export default function ProblemCard({ questionKey, questionParams, problemNumber, totalProblems }: ProblemCardProps) {
   const { t, i18n } = useTranslation();
 
-  // Resolve i18n key params (containing "."), pass others as-is
+  const bundle = i18n.getResourceBundle(i18n.language, 'translation') || {};
+
+  function resolveKey(key: string): string {
+    const parts = key.split('.');
+    // Try nested path (e.g., "item.apples" → item → apples)
+    let val: unknown = bundle;
+    for (const p of parts) {
+      val = (val as Record<string, unknown>)?.[p];
+      if (val === undefined) break;
+    }
+    if (typeof val === 'string') return val;
+
+    // Try flat key under first segment (e.g., "person.dad.bought" → person["dad.bought"])
+    if (parts.length >= 2) {
+      const section = bundle[parts[0]];
+      if (section && typeof section === 'object') {
+        const flatKey = parts.slice(1).join('.');
+        const flatVal = (section as Record<string, unknown>)[flatKey];
+        if (typeof flatVal === 'string') return flatVal;
+      }
+    }
+
+    return key;
+  }
+
   const resolved: Record<string, string> = {};
   for (const [key, val] of Object.entries(questionParams)) {
     const s = String(val);
-    if (s.includes('.')) {
-      resolved[key] = t(s, { defaultValue: s });
-    } else {
-      resolved[key] = s;
-    }
+    resolved[key] = s.includes('.') ? resolveKey(s) : s;
   }
 
-  // Get raw template from i18n resources (bypass interpolation entirely)
-  const parts = questionKey.split('.');
-  let template: unknown = i18n.getResourceBundle(i18n.language, 'translation');
-  for (const p of parts) {
-    template = (template as Record<string, unknown>)?.[p];
-  }
-  const raw = typeof template === 'string' ? template : questionKey;
-  const question = raw.replace(/\{\{(\w+)\}\}/g, (_, key) => resolved[key] ?? `{{${key}}}`);
+  const raw = resolveKey(questionKey);
+  const question = raw.replace(/\{\{(\w+)\}\}/g, (_, k: string) => resolved[k] ?? `{{${k}}}`);
 
   return (
     <div className="problem-card">
